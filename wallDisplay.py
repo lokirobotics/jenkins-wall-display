@@ -1,8 +1,6 @@
 #!/usr/bin/env/python
 
-import signal
-import sys
-
+from continuousRunner import ContinuousRunner
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
@@ -12,7 +10,7 @@ class WallDisplay :
 		self.username = username
 		self.password = password
 		self.viewId = viewId
-	
+		
 	def show(self):
 		driver = webdriver.Firefox()
 		driver.get("{}/login".format(self.jenkinsUrl))
@@ -30,19 +28,8 @@ class WallDisplay :
 	def close(self):
 		print "closing display"
 		self.driver.close()
-		return
+		return	
 
-def exit_handler(signal, frame):
-	global display
-	display.close()
-	sys.exit(0)
-
-signal.signal(signal.SIGTERM, exit_handler)
-
-display = WallDisplay("http://chekov", "geordi", "itb5geordi", "OSC%20Build%20Monitor")
-
-display.show()
-
-while True:
-	continue
-	
+	def start(self):
+		runner = ContinuousRunner(self.show, self.close)
+		runner.start()
