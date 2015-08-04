@@ -31,7 +31,7 @@ case "$1" in
 			echo $! > $PID
 		fi
 		;;
-	remove)
+	stop)
 		if [ -f $PID ]
 		then
 			echo "stopping wall display"

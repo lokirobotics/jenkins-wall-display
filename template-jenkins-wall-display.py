@@ -9,7 +9,7 @@ def exit_handler(signal, frame):
 
 signal.signal(signal.SIGTERM, exit_handler)
 
-display = WallDisplay(%JENKINS_URL%, %JENKINS_USER%, %JENKINS_API_KEY%, %VIEW_ID%)
+display = WallDisplay("%JENKINS_URL%", "%JENKINS_USER%", "%JENKINS_API_KEY%", "%VIEW_ID%")
 
 display.show()
 
