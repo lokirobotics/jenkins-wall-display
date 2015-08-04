@@ -34,7 +34,7 @@ case "$1" in
 	
 		read -p "Enter the name of the wall-display you want to remove: " NAME
 		
-		FILE ="$NAME-jenkins-wall-display"
+		FILE="$NAME-jenkins-wall-display"
 		
 		/etc/init.d/$FILE stop
 		rm /etc/init.d/$FILE
