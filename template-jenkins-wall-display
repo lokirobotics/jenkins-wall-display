@@ -1,0 +1,50 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:             %NAME%-jenkins-wall-display
+# Required-Start:	
+# Required-Stop:	
+# Default-Start:        
+# Default-Stop:         
+# Short-Description:    Jenkins Wall Display
+# Description:			Wall Display for Jenkins-Jobs
+### END INIT INFO
+
+NAME=%NAME%
+DIR="/opt/jenkins-wall-display"
+PID="$DIR/$NAME-jenkins-wall-display.pid"
+
+case "$1" in
+	start)
+		if [ -f $PID ]
+		then
+			echo "wall display already running"
+			exit 0
+		else
+			#enable kiosk mode
+			xset s off
+			xset -dpms
+			xset s noblank
+
+			nohup python $DIR/$NAME-jenkins-wall-display.py > /dev/null &
+			touch $PID
+			echo $! > $PID
+		fi
+		;;
+	remove)
+		if [ -f $PID ]
+		then
+			echo "stopping wall display"
+			kill $(cat $PID)
+			rm $PID
+		else
+			echo "wall display not running"
+		fi
+		;;
+	*)
+		echo "Usage: {start|stop}"
+		exit 1
+		;;
+esac
+exit 0
+	

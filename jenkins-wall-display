@@ -1,0 +1,52 @@
+#!/bin/bash
+
+case "$1" in
+	create)
+		
+		read -p "Enter the name of the wall-display: " NAME
+		read -p "Enter the URL of your Jenkins Server: " JENKINS_URL
+        read -p "Enter the id of the view you want to show: " VIEW_ID
+        read -p "Enter the username for the jenkins: " JENKINS_USER
+        read -p "Enter the api-key for the jenkins: " JENKINS_API_KEY
+		
+		NEW_PY="./$NAME-jenkins-wall-display.py"
+		
+		cp ./template-jenkins-wall-display.py $NEW_PY
+		
+		sed -i "s|%JENKINS_URL%|$JENKINS_URL|g" $NEW_PY
+		sed -i "s|%JENKINS_USER%|$JENKINS_USER|g" $NEW_PY
+		sed -i "s|%JENKINS_API_KEY%|$JENKINS_API_KEY|g" $NEW_PY
+		sed -i "s|%VIEW_ID%|$VIEW_ID|g" $NEW_PY
+		
+		NEW="$NAME-jenkins-wall-display"
+		
+		cp ./template-jenkins-wall-display ./$NEW
+		
+		sed -i "s|%NAME%|$NAME|g" ./$NEW
+		
+		mv ./$NEW /etc/init.d/$NEW
+		chmod 755 /etc/init.d/$NEW
+		
+		echo "finished"
+		
+		;;
+	remove)
+	
+		read -p "Enter the name of the wall-display you want to remove: " NAME
+		
+		FILE =$NAME-jenkins-wall-display
+		
+		/etc/init.d/$FILE stop
+		rm /etc/init.d/$FILE
+		rm ./$NAME-jenkins-wall-display.py
+		
+		echo "finished"
+		
+		;;
+	*)
+		echo "Usage: {create|remove}"
+		exit 1
+		;;
+esac
+exit 0
+	
